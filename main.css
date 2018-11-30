@@ -1,0 +1,57 @@
+body {
+  font: 16px/1.6 monospace, serif;
+  margin: 0;
+  max-width: 600px;
+  padding: 40px 60px;
+}
+
+main h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+section {
+  margin: 30px 0;
+}
+
+section h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+a {
+  color: #0000ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+em {
+  font-size: 0.86rem;
+  font-style: normal;
+  padding: 0.07rem 0.14rem;
+  background-color: rgba(27,31,35,.05);
+  border-radius: 3px;
+}
+
+#style-succeeded {
+  display: none;
+}
+
+.failed {
+  color: #DC143C;
+}
+
+.succeeded {
+  color: #3CB371;
+}
+
+footer {
+  color: #999;
+  border-top: 1px solid #e2e2e2;
+  padding-top: 10px;
+  margin-top: 60px;
+}

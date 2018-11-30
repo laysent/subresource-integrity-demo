@@ -1,0 +1,7 @@
+#style-failed {
+  display: none;
+}
+
+#style-succeeded {
+  display: list-item;
+}
