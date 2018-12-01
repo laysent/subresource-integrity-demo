@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Subresource Integrity and Preload</title>
+    <meta name=description content="demo page for Subresource Integrity (SRI) and Preload">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link rel=preload href=./style.css as=style />
+    <link rel=preload href=./script.js as=script />
+    <link
+      href=./main.css
+      rel=stylesheet
+      integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Subresource Integrity and Preload</h1>
+      <section>
+        <h2>explaination</h2>
+        <p>
+          This demo page is help you understand behavior of <em>preload</em> and <em>integrity</em>
+          resources.
+        </p>
+        <p>
+          You should be able to use querystring to control whether <em>SRI</em> is provided
+          in resources.
+        </p>
+        <ul>
+          <li><em>integrity=none</em> to set integrity for neither script nor stylesheet</li>
+          <li><em>integrity=script</em> to set integrity for only script</li>
+          <li><em>intergity=style</em> to set integrity for only stylesheet</li>
+        </ul>
+        <p>
+          You should be able to see warning in Chrome's console when <em>preload</em> resources are
+          not used. This will happen when <em>integrity</em> is provided as attribute in resource.
+        </p>
+        <p>
+          According to <a href=https://github.com/w3c/preload/issues/127>this issue</a>, Chrome is
+          having difficulty dealing with <em>preload</em> resources loaded with <em>SRI</em>.
+          To summerize, Chrome compiled preload resource and discard the raw bytes, hence it's not
+          possible to calculate the hash to validating <em>subresource integrity</em> later when
+          resource is actually required.
+        </p>
+        <p>
+          Please notice that cache might play a role here. Though Chrome puts warning in console,
+          it will not re-fetch the content unless cache is disabled in DevTool. The second time,
+          when content is actually required, browser will simply read it from disk cache.
+        </p>
+        <p>
+          For other browsers, Safari does not have the same issue as Chrome does, Firefox does not
+          support <em>Preload</em> feature by default. Meanwhile, if enable <em>Preload</em> feature
+          in Firefox by toggling <em>network.preload</em> in <em>about:config</em>, it will have
+          same behavior as Chrome.
+        </p>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <ul id=status-bar>
+          <li id=style-failed class=failed>Style failed to load</li>
+          <li id=style-succeeded class=succeeded>Style loaded successfully</li>
+          <li id=script-failed class=failed>Script failed to load</li>
+        </ul>
+      </section>
+      <section>
+        <a href=./index.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      var querystring = location.search.substr(1).split('&').reduce((acc, pair) => {
+        var parts = pair.split('=');
+        acc[parts[0]] = parts[1];
+        return acc;
+      }, { });
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './style.css';
+      if (querystring.integrity !== 'none' && querystring.integrity !== 'script') {
+        link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
+      }
+      link.onerror = () => {
+        console.error('failed to load stylesheet');
+      };
+      setTimeout(() => document.head.appendChild(link), 2000);
+
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = './script.js';
+      if (querystring.integrity !== 'none' && querystring.integrity !== 'style') {
+        script.integrity = 'sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha384-aziYpbFiXPrDNRl+ezabjVzEWFUIaDVB1W1tziHHjH80xK0CNbGqeCx2Oo/ib6cp sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
+      }
+      script.onerror = () => {
+        console.error('failed to load script');
+      };
+      setTimeout(() => document.body.appendChild(script), 2500);
+    </script>
+  </body>
+</html>
