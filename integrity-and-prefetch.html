@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Subresource Integrity and Prefetch</title>
+    <meta name=description content="demo page for Subresource Integrity (SRI) and Prefetch">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link rel=prefetch href=./style.css as=style />
+    <link rel=prefetch href=./script.js as=script />
+    <link
+      href=./main.css
+      rel=stylesheet
+      integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Subresource Integrity and Prefetch</h1>
+      <section>
+        <h2>explaination</h2>
+        <p>
+          This demo page is to help you understand behavior of <em>Prefetch</em> and <em>SRI</em> 
+          resources.
+        </p>
+        <p>
+          <em>Prefetch</em> is widely supported in browsers and is intended for prefetching resources
+          that will be used in the next navigation/page load. Stylesheet and script have been prefetched
+          on this page. You could navigate to following pages and see how it behaves:
+        </p>
+        <ul>
+          <li>
+            <a href=./integrity-and-prefetch-next.html?integrity=all>Page 1</a>
+            - Stylesheet and script are loaded with <em>SRI</em> enabled.
+          </li>
+          <li>
+            <a href=./integrity-and-prefetch-next.html?integrity=style>Page 2</a>
+            - Stylesheet is loaded with <em>SRI</em> enabled, but script is not.
+          </li>
+          <li>
+            <a href=./integrity-and-prefetch-next.html?integrity=script>Page 3</a>
+            - Script is loaded with <em>SRI</em> enabled, but stylesheet is not.
+          </li>
+          <li>
+            <a href=./integrity-and-prefetch-next.html>Page 4</a>
+            - Stylesheet and script are loaded without <em>SRI</em> enabled.
+          </li>
+        </ul>
+        <p>
+          Unless cache is disabled, <em>Prefetch</em> should ensure that resources can be directly
+          used from cache on next page with or without <em>SRI</em> enabled.
+        </p>
+      </section>
+      <section>
+        <a href=./index.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+  </body>
+</html>
