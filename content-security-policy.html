@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for require-sri-for in Content-Security-Policy HTTP Header</title>
+    <meta name=description content="demo page for require-sri-for in Content-Security-Policy HTTP Header">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link rel=prefetch href=./style.css as=style />
+    <link rel=prefetch href=./script.js as=script />
+    <meta http-equiv=Content-Security-Policy content="require-sri-for script style">
+    <link
+      href=./main.css
+      rel=stylesheet
+      integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+    />
+  </head>
+  <body>
+    <main>
+      <h1>require-sri-for in Content-Security-Policy</h1>
+      <section>
+        <h2>explaination</h2>
+        <p>
+          This demo page is to help you understand <em>require-sri-for</em> in <em>Content-Security-Policy</em>.
+        </p>
+        <p>
+          You can put this in HTTP response header when providing HTML file. Or, equivalently, you
+          can use this feature by adding the following line in your HTML file:
+        </p>
+        <p>
+          <em>&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;require-sri-for script style&quot;&gt;</em>
+        </p>
+        <p>
+          Current page uses <em>meta</em> tag to add <em>Content-Security-Policy</em> support. It uses
+          <em>require-sri-for script, style</em>, which enables validation check for both stylesheets
+          and scripts. Besides this, following are all available options for <em>require-sri-for</em>:
+        </p>
+        <ul>
+          <li><em>require-sri-for script, style</em> to enable validation for all stylesheets and scripts on page</li>
+          <li><em>require-sri-for script</em> to enable only validation for scripts on page</li>
+          <li><em>require-sri-for style</em> to enable only validation for stylesheets on page</li>
+        </ul>
+        <p>
+          You should be able to use querystring to control whether <em>SRI</em> is provided
+          in resources.
+        </p>
+        <ul>
+          <li><em>integrity=all</em> to set <em>integrity</em> for both script and stylesheet</li>
+          <li><em>integrity=script</em> to set <em>integrity</em> for only script</li>
+          <li><em>intergity=style</em> to set <em>integrity</em> for only stylesheet</li>
+        </ul>
+        <p>
+          Most of the browsers doesn't support this feature at the moment, including Chrome, Firefox
+          and Safari. For Chrome, you should be able to enable this experimental feature by visiting
+          <a href=chrome://flags/#enable-experimental-web-platform-features>chrome://flags/#enable-experimental-web-platform-features</a>.
+        </p>
+        <p>
+          When supported, <em>Content-Security-Policy</em> with <em>require-sri-for</em> set should
+          force the browser to refuse loading any resources without <em>SRI</em>.
+          This should help enhance the security by forcing all static and dynamic imported resources
+          to use <em>SRI</em> on website. Also, it's a good way to test locally and check if there
+          is any missing <em>SRI</em>.
+        </p>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <ul id=status-bar>
+          <li id=style-failed class=failed>Style failed to load</li>
+          <li id=style-succeeded class=succeeded>Style loaded successfully</li>
+          <li id=script-failed class=failed>Script failed to load</li>
+        </ul>
+      </section>
+      <section>
+        <a href=./index.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      var querystring = location.search.substr(1).split('&').reduce((acc, pair) => {
+        var parts = pair.split('=');
+        acc[parts[0]] = parts[1];
+        return acc;
+      }, { });
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './style.css';
+      if (querystring.integrity === 'all' || querystring.integrity === 'style') {
+        link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
+      }
+      link.onerror = () => {
+        console.error('failed to load stylesheet');
+      };
+      document.head.appendChild(link);
+
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = './script.js';
+      script.crossOrigin = 'anonymous';
+      if (querystring.integrity === 'all' || querystring.integrity === 'script') {
+        script.integrity = 'sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha384-aziYpbFiXPrDNRl+ezabjVzEWFUIaDVB1W1tziHHjH80xK0CNbGqeCx2Oo/ib6cp sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
+      }
+      script.onerror = () => {
+        console.error('failed to load script');
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
