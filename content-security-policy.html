@@ -7,13 +7,12 @@
     <meta http-equiv=X-UA-Compatible content="IE=Edge">
     <meta name=viewport content="width=device-width,initial-scale=1.0">
     <meta name=robots content=index,follow>
-    <link rel=prefetch href=./style.css as=style />
-    <link rel=prefetch href=./script.js as=script />
     <meta http-equiv=Content-Security-Policy content="require-sri-for script style">
     <link
       href=./main.css
       rel=stylesheet
       integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
     />
   </head>
   <body>
@@ -87,6 +86,7 @@
       var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = './style.css';
+      link.crossOrigin = 'anonymous';
       if (querystring.integrity === 'all' || querystring.integrity === 'style') {
         link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
       }

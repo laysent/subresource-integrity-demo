@@ -7,12 +7,13 @@
     <meta http-equiv=X-UA-Compatible content="IE=Edge">
     <meta name=viewport content="width=device-width,initial-scale=1.0">
     <meta name=robots content=index,follow>
-    <link rel=preload href=./style.css as=style />
-    <link rel=preload href=./script.js as=script />
+    <link rel=preload href=./style.css as=style crossorigin=anonymous />
+    <link rel=preload href=./script.js as=script crossorigin=anonymous />
     <link
       href=./main.css
       rel=stylesheet
       integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
     />
   </head>
   <body>
@@ -65,6 +66,16 @@
         </ul>
       </section>
       <section>
+        <h2>Crossorigin</h2>
+        <p>
+          As mentioned in <a href=./integrity.html>previous demo page</a>, <em>SRI</em> comes usually
+          with cross-domain request and requires to add <em>crossorigin="anonymous"</em>, so that
+          browser can read the content and calculate hash. When using resource with <em>crossorigin</em>
+          given, it's also required to provide same <em>crossorigin</em> in <em>preload</em>, otherwise
+          preloaded resource will be ignored.
+        </p>
+      </section>
+      <section>
         <a href=./index.html>Back</a>
       </section>
       <footer>
@@ -80,6 +91,7 @@
       var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = './style.css';
+      link.crossOrigin = 'anonymous';
       if (querystring.integrity !== 'none' && querystring.integrity !== 'script') {
         link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
       }
@@ -91,6 +103,7 @@
       var script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = './script.js';
+      script.crossOrigin = 'anonymous';
       if (querystring.integrity !== 'none' && querystring.integrity !== 'style') {
         script.integrity = 'sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha384-aziYpbFiXPrDNRl+ezabjVzEWFUIaDVB1W1tziHHjH80xK0CNbGqeCx2Oo/ib6cp sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
       }

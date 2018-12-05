@@ -11,6 +11,7 @@
       href=./main.css
       rel=stylesheet
       integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
     />
   </head>
   <body>
@@ -59,6 +60,20 @@
           <li id=style-succeeded class=succeeded>Style loaded successfully</li>
           <li id=script-failed class=failed>Script failed to load</li>
         </ul>
+      </section>
+      <section>
+        <h2>Crossorigin</h2>
+        <p>
+          When using <em>SRI</em>, it is usually necessary to include <em>crossorigin="anonymous"</em>
+          as well. The reason behind this is, <em>SRI</em> is designed to validate resources on
+          third-party CDN, where security is out of our hand. That means, the request is cross-domain.
+          To ensure the browser can read the content and calculate hash, <em>crossorigin="anonymous"</em>
+          is required and CDN must explicitly allow this. Otherwise the load of content will fail.
+        </p>
+        <p>
+          For resources within same domain, <em>crossorign="anonymous"</em> isn't required. However,
+          <em>SRI</em> does not play a key role in such scenario as well.
+        </p>
       </section>
       <section>
         <a href=./index.html>Back</a>

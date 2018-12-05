@@ -11,6 +11,7 @@
       href=./main.css
       rel=stylesheet
       integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
     />
   </head>
   <body>
@@ -46,6 +47,7 @@
       var link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = './style.css';
+      link.crossOrigin = 'anonymous';
       if (querystring.integrity === 'all' || querystring.integrity === 'style') {
         link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
       }
@@ -54,6 +56,7 @@
       var script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = './script.js';
+      script.crossOrigin = 'anonymous';
       if (querystring.integrity === 'all' || querystring.integrity === 'script') {
         script.integrity = 'sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha384-aziYpbFiXPrDNRl+ezabjVzEWFUIaDVB1W1tziHHjH80xK0CNbGqeCx2Oo/ib6cp sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
       }
