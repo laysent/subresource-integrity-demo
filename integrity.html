@@ -10,7 +10,7 @@
     <link
       href=./main.css
       rel=stylesheet
-      integrity="sha256-pnLPVDCEhpNDMHS61+Od7eHPVgoIQHHhScnvbb9EV7A= sha384-RNSVlmGWn7Lis5InmlZBU0JpclggssSGdSQHNMot2am4T7g8CCwYyOJE8PhMmk5N sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      integrity="sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
       crossorigin=anonymous
     />
   </head>
@@ -36,8 +36,10 @@
           white space.
         </p>
         <p>
-          One or more hashes mis-match will cause browser to throw network error and refuse to use
-          corresponding resource.
+          When multiple hash results are provided, the strongest hash result will be used. If multiple
+          hash results exists with same hash algorithm, the resource will be considered as valid if
+          any of the hashes matches the actual one. More examples regarding multiple hashes in
+          <em>integrity</em> can be found in <a href=./integrity-with-multiple-hashes.html>this demo</a>.
         </p>
         <p>
           Following is the <em>Node.js</em> code you can use to generate hash for given content.
@@ -97,7 +99,7 @@
       } else if (wrongIntegrity === 'invalid') {
         link.integrity = 'invalid';
       } else {
-        link.integrity = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4= sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
+        link.integrity = 'sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
       }
       link.onerror = () => {
         console.error('failed to load stylesheet');
@@ -113,7 +115,7 @@
       } else if (wrongIntegrity === 'invalid') {
         script.integrity = 'invalid';
       } else {
-        script.integrity = 'sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha384-aziYpbFiXPrDNRl+ezabjVzEWFUIaDVB1W1tziHHjH80xK0CNbGqeCx2Oo/ib6cp sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
+        script.integrity = 'sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
       }
       script.onerror = () => {
         console.error('failed to load script');

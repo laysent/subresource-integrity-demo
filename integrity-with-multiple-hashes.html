@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Integrity attribute with multiple hashes</title>
+    <meta name=description content="demo page for integrity attribute in resources with multiple hashes">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link
+      href=./main.css
+      rel=stylesheet
+      integrity="sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Integrity with Multiple Hashes</h1>
+      <section>
+        <h2>Different hash algorithms</h2>
+        <p>
+          When there are multiple hashes exist in <em>integrity</em> attribute separated with space,
+          browser will use hash with strongest algorithm. In other word, hash result from <em>sha512</em>
+          is used if exists, otherwise <em>sha384</em> is used. If none of them exists, hash result
+          from <em>sha256</em> will be used to validate resource.
+        </p>
+        <p>
+          You should be able to use querystring to control whether <em>integrity</em> of stylesheet
+          has correct hash for the strongest.
+        </p>
+        <ul>
+          <li>
+            <em>correct-integrity=sha256</em> to set <em>integrity</em> using correct hash for sha256,
+            while it will set incorrect hashes for the rest.
+          </li>
+          <li>
+            <em>correct-integrity=sha384</em> to set <em>integrity</em> using correct hash for sha384,
+            while it will set incorrect hashes for the rest.
+          </li>
+          <li>
+            <em>correct-integrity=sha512</em> to set <em>integrity</em> using correct hash for sha512,
+            while it will set incorrect hashes for the rest.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Same hash algorithm</h2>
+        <p>
+          When there are multiple hashes exist in <em>integrity</em>attribute with same algorithm,
+          it will only fail when all of them are incorrect matching the actual hash of resource.
+        </p>
+        <p>
+          This multiple hash behavior is useful when same URL is pointing to different resources
+          based on browsers, visitor's account types, etc.
+        </p>
+        <p>
+          You should be able to use querystring to control whether <em>integrity</em> of script
+          has one correct hash amoung all hashes in attribute.
+        </p>
+        <ul>
+          <li>
+            <em>has-correct-integrity=true</em> to set at least one correct hash in <em>integrity</em>.
+          </li>
+          <li>
+            <em>has-correct-integrity=false</em> to set no correct hash in <em>integrity</em>.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <ul id=status-bar>
+          <li id=style-failed class=failed>Style failed to load</li>
+          <li id=style-succeeded class=succeeded>Style loaded successfully</li>
+          <li id=script-failed class=failed>Script failed to load</li>
+        </ul>
+      </section>
+      <section>
+        <a href=./integrity.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      var querystring = location.search.substr(1).split('&').reduce((acc, pair) => {
+        var parts = pair.split('=');
+        acc[parts[0]] = parts[1];
+        return acc;
+      }, { });
+      var correctIntegrity = querystring['correct-integrity'];
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './style.css';
+      var sha256 = 'sha256-wrong';
+      var sha384 = 'sha384-wrong';
+      var sha512 = 'sha512-wrong';
+      if (correctIntegrity === 'sha256') {
+        sha256 = 'sha256-6ydxKzPXjNk/ImsjFwuCA7+70/Vv4ze4JvMBtgwYrm4=';
+      } else if (correctIntegrity === 'sha384') {
+        sha384 = 'sha384-0mcSNULWv4XE/NR+L0vY71XaN52RV/TnVUkzKY5bT6eATLAaW7HMrTKalIBlTXzO';
+      } else if (correctIntegrity === 'sha512') {
+        sha512 = 'sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
+      }
+      link.integrity = `${sha256} ${sha384} ${sha512}`;
+      link.onerror = () => {
+        console.error('failed to load stylesheet');
+      };
+      document.head.appendChild(link);
+
+      var hasCorrectIntegrity = querystring['has-correct-integrity'] === 'true';
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = './script.js';
+      script.crossOrigin = 'anonymous';
+      if (hasCorrectIntegrity) {
+        script.integrity = 'sha256-wrong sha256-dGLrqT7nHVAwLysXutEEdoKqAH3miODarQrJhGxAsyM= sha256-incorrect';
+      } else {
+        script.integrity = 'sha256-wrong sha256-incorrect';
+      }
+      script.onerror = () => {
+        console.error('failed to load script');
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
