@@ -1,0 +1,8 @@
+#style-failed {
+  display: none;
+}
+
+#style-succeeded {
+  display: list-item;
+}
+/* this is the line to messed-up original file and change hash result */

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Service Worker working with Subresource Integrity</title>
+    <meta name=description content="demo page for service worker working with subresource integrity">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link
+      href=../main.css
+      rel=stylesheet
+      integrity="sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Subresource Integrity and Service Worker</h1>
+      <section>
+        <h2>Service Worker</h2>
+        <p>
+          <em>Service Worker</em> provides the ability to hijack network request and manipulate it.
+          By default, when <em>Subresource Integrity</em> is enabled, resource will fail to load if
+          hash does not match. This will cause the web app to perform incorrectly. In helping with
+          <em>Service Worker</em>, the strategy can be made so that when resource on CDN fail to load,
+          the backup resource, which located on own server for example, can be used instead.
+        </p>
+        <p>
+          This demo page illustrates how it works: On initial view, you should see both script and
+          stylesheet fail to load, as the hash isn't correct. However, when <em>Service Worker</em> successfully
+          installed, it will attempt to use the backup resource instead when catching the request error.
+          And you should then see everything loaded correctly.
+        </p>
+        <p>
+          If you enable <em>Bypass for network</em> configuration in DevTool of Chrome, you will see
+          both resources fail again.
+        </p>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <ul id=status-bar>
+          <li id=style-failed class=failed>Style failed to load</li>
+          <li id=style-succeeded class=succeeded>Style loaded successfully</li>
+          <li id=script-failed class=failed>Script failed to load</li>
+        </ul>
+      </section>
+      <section>
+        <a href=../index.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      function registerSW() {
+        if (!('serviceWorker' in navigator)) {
+          console.error('service worker is not available in current browser.');
+          return;
+        }
+        /**
+         * Register service worker under narrowed scope,
+         * so that service worker won't affect this demo site globally
+         */
+        navigator.serviceWorker.register('./sw.js', { scope: '/subresource-integrity-demo/service-worker/' })
+          .then(
+            () => { console.log('Registration of service worker succeed.'); },
+            (error) => { console.error('Registration of service worker failed with error: ', error); }
+          );
+      }
+      registerSW();
+
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = './style.messed-up.css';
+      link.integrity = 'sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA==';
+      link.crossOrigin = 'anonymous';
+      link.onerror = () => {
+        console.error('failed to load stylesheet');
+      };
+      document.head.appendChild(link);
+
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = './script.messed-up.js';
+      script.crossOrigin = 'anonymous';
+      script.integrity = 'sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA==';
+      script.onerror = () => {
+        console.error('failed to load script');
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
