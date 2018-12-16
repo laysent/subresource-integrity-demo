@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Service Worker working with Subresource Integrity</title>
+    <meta name=description content="demo page for service worker working with subresource integrity">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link
+      href=../main.css
+      rel=stylesheet
+      integrity="sha512-HGKGIfZyp+ljaM5fPKz0WVZteBpgQDw6TpR0xjUbMXxIoPgBKw4iRxcK2PIrOij7p53LWvuykZ/DhzmkCKYuTQ=="
+      crossorigin=anonymous
+    />
+    <link
+      href=./style.messed-up.css
+      rel=stylesheet
+      integrity="sha512-7z8mwAKsLTdd/Gto8TfFUpcx1F0+HMB2mxZpkthvOs7FAtKzVQiwa7fF48jSv2tk6vYRtgfT3K5l2DOMWrqyRA=="
+      crossorigin=anonymous
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Subresource Integrity and Service Worker</h1>
+      <section>
+        <h2>Service Worker</h2>
+        <p>
+          This demo page illustrates how <em>Service Worker</em> works with <em>Subresource Integrity</em>.
+          Different from <a href=./integrity-with-service-worker-and-inserted-resource.html>previous demo</a>,
+          resources on this page are not inserted into DOM tree by JavaScript.
+        </p>
+        <p>
+          For Chrome, <em>Service Worker</em> is not able to catch the error thrown by mismatch of
+          hashes, and <em>integrity</em> attribute in <em>request</em> is also empty. On the other
+          hand, Firefox is able to treat both the same, meaning that it will as well catch the error
+          and attempt to use backup resource instead when dealing with embedded resources. Safari is
+          a bit weird, it will treat stylesheet and script differently. Safari can successfully handle
+          loading of stylesheet, but is not able to do the same for script.
+        </p>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <ul id=status-bar>
+          <li id=style-failed class=failed>Style failed to load</li>
+          <li id=style-succeeded class=succeeded>Style loaded successfully</li>
+          <li id=script-failed class=failed>Script failed to load</li>
+        </ul>
+      </section>
+      <section>
+        <a href=./integrity-with-service-worker-and-inserted-resource.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      function registerSW() {
+        if (!('serviceWorker' in navigator)) {
+          console.error('service worker is not available in current browser.');
+          return;
+        }
+        /**
+         * Register service worker under narrowed scope,
+         * so that service worker won't affect this demo site globally
+         */
+        navigator.serviceWorker.register('./sw.js', { scope: '/subresource-integrity-demo/service-worker/' })
+          .then(
+            () => { console.log('Registration of service worker succeed.'); },
+            (error) => { console.error('Registration of service worker failed with error: ', error); }
+          );
+      }
+      registerSW();
+    </script>
+    <script
+      type=text/javascript
+      src=./script.messed-up.js
+      crossorigin=anonymous
+      integrity="sha512-zw36VuUy/09iVs2cRYeF80XlEEf0sRRDpBojNYf+3AlG++nhf6UcgWIQXiHKaLkw36VZLqV7nn/OeacCLsjaBA=="
+    ></script>
+  </body>
+</html>

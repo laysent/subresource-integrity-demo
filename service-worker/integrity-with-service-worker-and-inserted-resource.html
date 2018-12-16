@@ -36,6 +36,12 @@
           If you enable <em>Bypass for network</em> configuration in DevTool of Chrome, you will see
           both resources fail again.
         </p>
+        <p>
+          Please notice that for Chrome, <em>Service Worker</em> is only able to catch error of mismatching
+          <em>integrity</em> when resoure is dynamically inserted into DOM tree by JavaScript. To see
+          how browser behaves when resources are in DOM tree by default, please check
+          <a href=./integrity-with-service-worker-and-embedded-resource.html>next demo page</a>.
+        </p>
       </section>
       <section>
         <h2>Status of resources loading</h2>
