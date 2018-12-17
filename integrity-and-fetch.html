@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Demo Page for Subresource Integrity and Fetch</title>
+    <meta name=description content="demo page for Subresource Integrity (SRI) and fetching resource such as image">
+    <meta http-equiv=X-UA-Compatible content="IE=Edge">
+    <meta name=viewport content="width=device-width,initial-scale=1.0">
+    <meta name=robots content=index,follow>
+    <link
+      href=./main.css
+      rel=stylesheet
+      integrity="sha512-mbzzgGIjfEC93ZP2SML7m8+qpNxg4KQH5s28RcwDGfgB8mpa9MbIlSg1GDd6IMeHowT1owpRqNnSJK7Feob12g=="
+      crossorigin=anonymous
+    />
+  </head>
+  <body>
+    <main>
+      <h1>Subresource Integrity and Fetch</h1>
+      <section>
+        <h2>explaination</h2>
+        <p>
+          By default, browser only support <em>integrity</em> for script and stylesheet. However,
+          <em>fetch</em> can provides option <em>integrity</em> as well, which makes it possible to
+          use this feature for other resources, such as image in this demo page.
+        </p>
+        <p>
+          In this demo, it uses <em>fetch</em> to download an image resource with <em>integrity</em>
+          option provided. The browser will validate after resource is being downloaded. When succeed,
+          image will be shown, otherwise an error will be catched and app can do further steps (for
+          example, load a backup resource from own server).
+        </p>
+        <ul>
+          <li>
+            <em>correct-integrity=true</em> to set correct hash in <em>integrity</em>.
+          </li>
+          <li>
+            <em>correct-integrity=false</em> to set incorrect hash in <em>integrity</em>.
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>drawback</h2>
+        <p>
+          <em>fetch</em> does not have the same request priority as image or other resources.
+          Meanwhile, browser will not share cache when resource is being used again from a native
+          approach, such as an &lt;img&gt; tag.
+        </p>
+      </section>
+      <section>
+        <h2>Status of resources loading</h2>
+        <img id=img alt=pikachu style="width:120px;height:120px;color:#ddd" />
+      </section>
+      <section>
+        <a href=./index.html>Back</a>
+      </section>
+      <footer>
+        © 2018 LaySent.
+      </footer>
+    </main>
+    <script>
+      const querystring = location.search.substr(1).split('&').reduce((acc, pair) => {
+        var parts = pair.split('=');
+        acc[parts[0]] = parts[1];
+        return acc;
+      }, { });
+      const correctIntegrity = 'sha256-zr0qbVJgRXq631jLJkxyQ1EPdv7hBYBd4JuGg7SUZks=';
+      const incorrectIntegrity = 'sha256-wrong';
+      const useIncorrectIntegrity = querystring['correct-integrity'] && querystring['correct-integrity'] === 'false';
+      const integrity = useIncorrectIntegrity ? incorrectIntegrity : correctIntegrity;
+      const img = document.getElementById('img');
+      /**
+       * `cors` mode is required, to ensure response can be tranformed to blob using JavaScript
+       * and later used in <img> tag as `src`. CDN server should support it to make it work.
+       */
+      fetch('./pikachu.png', { integrity, mode: 'cors' })
+        .then(
+          /**
+           * Convert response to URL, so that it can be used directly in `src` attribute.
+           * Re-assigning same image URL to image `src` won't work, as browser will not re-use
+           * downloaded resource as cache, because the request type are different, one is `fetch`
+           * and one is `png`.
+           * Check network tab in Chrome DevTool for details.
+           */
+          (resp) => resp.blob().then(blob => img.src = URL.createObjectURL(blob)),
+          /**
+           * Further actions can be made when error occurs, including
+           * + inform server for possible issue
+           * + use backup resource instead
+           */
+          (e) => {
+            console.error(e);
+            /* inform server for possible issue */
+            // navigator.sendBeacon(/* blablabla */);
+            img.src = ''; // should be a backup resource here
+          }
+        );
+    </script>
+  </body>
+</html>

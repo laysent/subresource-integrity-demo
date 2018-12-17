@@ -12,12 +12,47 @@ main h1 {
 
 section {
   margin: 30px 0;
+  position: relative;
 }
 
 section h2 {
   font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+img:not([src]) {
+  display: none;
+}
+
+img[src] {
+  display: block;
+  position: relative;
+}
+
+img[src]:before {
+  content: '';
+  display: block;
+
+  position: absolute;
+  left: 0;
+  height: calc(100% - 4px);
+  width: calc(100% - 4px);
+  background-color: #ddd;
+  border: 2px dotted #ccc;
+  border-radius: 5px;
+}
+
+img[src]:after {
+  content: 'No ' attr(alt);
+  display: block;
+  color: #333;
+
+  position: absolute;
+  top: calc(50% - 0.8rem);
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 
 a {
