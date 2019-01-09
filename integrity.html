@@ -13,6 +13,12 @@
       integrity="sha512-mbzzgGIjfEC93ZP2SML7m8+qpNxg4KQH5s28RcwDGfgB8mpa9MbIlSg1GDd6IMeHowT1owpRqNnSJK7Feob12g=="
       crossorigin=anonymous
     />
+    <link
+      href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css
+      rel=stylesheet
+      integrity="sha512-k6kuQA03z8AQhvjS6AbfmYN9B/N9C6suruJoVDmUbiVUUE17HGiamR8Y7LwUOWhx31wPuhonR5r8NNMqjsCn3w=="
+      crossorigin=anonymous
+    />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31656866-1"></script>
     <script>
@@ -54,14 +60,11 @@
           Following is the <em>Node.js</em> code you can use to generate hash for given content.
         </p>
         <p>
-          <pre>
-<code>
-  require('crypto')
-    .createHash(type) // one of 'sha256', 'sha384' or 'sha512'
+<pre><code class="javascript">  require('crypto')
+    .createHash(type) // 'sha256', 'sha384' or 'sha512'
     .update(content, 'utf8')
     .digest('base64');
-</code>
-          </pre>
+</code></pre>
         </p>
       </section>
       <section>
@@ -131,5 +134,12 @@
       };
       document.body.appendChild(script);
     </script>
+    <script
+      type=text/javascript
+      src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js
+      integrity="sha512-XJ+kBRoBFQps17m1/oCbbESEJtXMrCKq6Ls2a9MKSwoQsSrUk8i+qOd/7YXfl3BsAlfjUyQ4EPd0b0JB24Bgwg=="
+      crossorigin=anonymous
+    ></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
