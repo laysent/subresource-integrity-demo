@@ -14,6 +14,12 @@
       integrity="sha512-mbzzgGIjfEC93ZP2SML7m8+qpNxg4KQH5s28RcwDGfgB8mpa9MbIlSg1GDd6IMeHowT1owpRqNnSJK7Feob12g=="
       crossorigin=anonymous
     />
+    <link
+      href=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.css
+      rel=stylesheet
+      integrity="sha256-/Kfdz9pXGPe+bFF+TtxHqbg6F9c3Rb0jN48uy+2b/do="
+      crossorigin=anonymous
+    />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31656866-1"></script>
     <script>
@@ -48,6 +54,65 @@
             <em>correct-integrity=false</em> to set incorrect hash in <em>integrity</em>.
           </li>
         </ul>
+      </section>
+      <section>
+        <h2>code example</h2>
+        <p>
+          Following is an example written using React. Image will be loaded with <em>integrity</em>
+          validation. Loading component is used when still fetching the resource.
+        </p>
+<pre><code class="language-jsx">import React from 'react';
+
+function getFetch(src, integrity) {
+  return fetch(src, { integrity, mode: 'cors' })
+      .then(response => response.blob())
+      .then(blob => URL.createObjectURL(blob));
+};
+
+const ImageComponent =
+  /**
+   * React.memo is used to ensure that
+   * request will be fetched once only.
+   */
+  React.memo(({ src, integrity, alt, ...rest }) => {
+    /**
+     * Use React.lazy with React.Suspense
+     * to display loading effect when still
+     * fetching the resource.
+     */
+    const Component = React.lazy(
+      () => getFetch(src, integrity)
+        .then(
+          url => ({
+            default: (props) => (
+              &lt;img src={url} alt={props.alt} {...props} /&gt;
+            ),
+          }),
+          error => ({
+            default: () => (
+              &lt;div>Error: {error.toString()}&lt;/div&gt
+            );
+          }),
+        ),
+    );
+    return &lt;Component alt={alt} {...rest} /&gt;;
+  });
+
+const Image = ({ src, integrity, alt, ...rest }) => {
+  return (
+    &lt;React.Suspense fallback={&lt;div&gt;loading...&lt;/div&gt;}&gt;
+      &lt;ImageComponent
+        src={src}
+        integrity={integrity}
+        alt={alt}
+        {...rest}
+      /&gt;
+    &lt;/React.Suspense&gt;
+  );
+};
+
+export default Image;
+</code></pre>
       </section>
       <section>
         <h2>drawback</h2>
@@ -106,5 +171,17 @@
           }
         );
     </script>
+    <script
+      type=text/javascript
+      src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js
+      integrity="sha256-jc6y1s/Y+F+78EgCT/lI2lyU7ys+PFYrRSJ6q8/R8+o="
+      crossorigin=anonymous
+    ></script>
+    <script
+      type=text/javascript
+      src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-jsx.min.js
+      integrity="sha256-8Kkghwrxh0GwDxr3zJ3EhJMVF2w7+tw5mZZmLN+bg4c="
+      crossorigin=anonymous
+    ></script>
   </body>
 </html>
