@@ -15,9 +15,9 @@
       crossorigin=anonymous
     />
     <link
-      href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css
+      href=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.css
       rel=stylesheet
-      integrity="sha512-k6kuQA03z8AQhvjS6AbfmYN9B/N9C6suruJoVDmUbiVUUE17HGiamR8Y7LwUOWhx31wPuhonR5r8NNMqjsCn3w=="
+      integrity="sha256-/Kfdz9pXGPe+bFF+TtxHqbg6F9c3Rb0jN48uy+2b/do="
       crossorigin=anonymous
     />
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -61,10 +61,10 @@
           Following is the <em>Node.js</em> code you can use to generate hash for given content.
         </p>
         <p>
-<pre><code class="javascript">  require('crypto')
-    .createHash(type) // 'sha256', 'sha384' or 'sha512'
-    .update(content, 'utf8')
-    .digest('base64');
+<pre><code class="language-javascript">require('crypto')
+  .createHash(type) // 'sha256', 'sha384' or 'sha512'
+  .update(content, 'utf8')
+  .digest('base64');
 </code></pre>
         </p>
       </section>
@@ -137,10 +137,15 @@
     </script>
     <script
       type=text/javascript
-      src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js
-      integrity="sha512-XJ+kBRoBFQps17m1/oCbbESEJtXMrCKq6Ls2a9MKSwoQsSrUk8i+qOd/7YXfl3BsAlfjUyQ4EPd0b0JB24Bgwg=="
+      src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js
+      integrity="sha256-jc6y1s/Y+F+78EgCT/lI2lyU7ys+PFYrRSJ6q8/R8+o="
       crossorigin=anonymous
     ></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script
+      type=text/javascript
+      src=https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-javascript.min.js
+      integrity="sha256-G5C8j/0gBEHgf/x60UZQY5QrKPWdUo2Pgcu4OgU5q7w="
+      crossorigin=anonymous
+    ></script>
   </body>
 </html>
