@@ -85,6 +85,9 @@ const ImageComponent =
         .then(
           url => ({
             default: (props) => (
+              React.useEffect(() => () => {
+                URL.revokeObjectURL(url);
+              }, []);
               &lt;img src={url} alt={props.alt} {...props} /&gt;
             ),
           }),
